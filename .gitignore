@@ -1,0 +1,12 @@
+/bin
+/log
+/logarchive
+/build
+/.gradle
+/.idea
+/classes
+/out
+*iml
+/buildOutputCleanup
+/vcsWorkingDirs
+
