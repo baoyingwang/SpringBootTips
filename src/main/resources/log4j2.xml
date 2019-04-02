@@ -21,7 +21,7 @@
         </RollingFile>
 
         <!--
-        <Kafka name="Kafka" topic="huobi-wallet" syncSend="true">
+        <Kafka name="Kafka" topic="sometopic" syncSend="true">
             <Property name="bootstrap.servers">kafka-1c-1.xyz.com:9092,kafka-1c-2.xyz.com:9092,kafka-1c-3.xyz.com:9092</Property>
             <JsonLayout>
                 <KeyValuePair key="some" value="general"/>
