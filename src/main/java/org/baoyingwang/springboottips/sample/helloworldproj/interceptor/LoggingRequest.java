@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
  * note: this jvm option is to make sure the internal spring logging will be replaced by my log4j2 logging.
  */
 @Configuration
-public class RequestLogging extends CommonsRequestLoggingFilter{
+public class LoggingRequest extends CommonsRequestLoggingFilter{
 
     @Override
     protected String createMessage(HttpServletRequest request, String prefix, String suffix){
@@ -28,7 +28,7 @@ public class RequestLogging extends CommonsRequestLoggingFilter{
     public CommonsRequestLoggingFilter requestLoggingFilter() {
 
         //loggingFilter.setIncludeQueryString(false); //because we hope DON'T print signature - we have printed the url(with signature) in beforeRequest
-        CommonsRequestLoggingFilter filter = new RequestLogging();
+        CommonsRequestLoggingFilter filter = new LoggingRequest();
         filter.setIncludeQueryString(true);
         filter.setIncludePayload(true);
         filter.setMaxPayloadLength(20000);

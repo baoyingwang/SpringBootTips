@@ -2,6 +2,7 @@ package org.baoyingwang.springboottips.sample.helloworldproj.contoller;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.baoyingwang.springboottips.sample.helloworldproj.enums.RestBusinessErrorCode;
 import org.baoyingwang.springboottips.sample.helloworldproj.json.CountryModel;
 import org.baoyingwang.springboottips.sample.helloworldproj.json.SimpleResultResponse;
 import org.baoyingwang.springboottips.sample.helloworldproj.service.HelloWorldService;
@@ -35,13 +36,14 @@ public class HelloWorldController {
 
     }
 
+    //TODO return id of the new entity
     @RequestMapping(value = "/country", method = RequestMethod.POST)
-    public SimpleResultResponse<CountryModel> addCountry(@RequestBody CountryModel model){
+    public SimpleResultResponse<String> addCountry(@RequestBody CountryModel model){
 
-        //TODO validate fields of model (by hibernate validator)
-        CountryModel addedodel = helloWorldService.addCountry(model.getCountry(), model.getPopulation());
+        //TODO validate fields of model (by hibernate validator or some other validator)
+        RestBusinessErrorCode errorCode = helloWorldService.addCountry(model.getCountry(), model.getPopulation());
 
-        return SimpleResultResponse.newInstance(addedodel);
+        return SimpleResultResponse.newInstance(model.getCountry());
     }
 
 }

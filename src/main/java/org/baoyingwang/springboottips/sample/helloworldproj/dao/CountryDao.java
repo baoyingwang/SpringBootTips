@@ -4,6 +4,9 @@ import org.baoyingwang.springboottips.sample.helloworldproj.entity.CountryEntity
 import org.springframework.stereotype.Component;
 
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -22,6 +25,12 @@ public class CountryDao {
         japan.setCountry("Japan");
         japan.setPopulation(100_000_000);
         countries.put("Japan", china);
+    }
+
+    //WARN: not too many country in the world. But for others, limit result size is required
+    //TODO limit result size
+    public List<CountryEntity> query(){
+        return new ArrayList<>(countries.values());
     }
 
     public CountryEntity query(String country){

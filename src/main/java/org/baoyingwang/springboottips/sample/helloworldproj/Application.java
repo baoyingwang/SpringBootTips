@@ -14,6 +14,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class Application {
 
     public static void main(String[] args) {
+
+        //TODO overall restful api sample
+        System.out.println("TODO - high: refer other project api definition, e.g. wechat, etc to refine the restful interface, https://open.weixin.qq.com/");
+
         SpringApplication.run(Application.class);
     }
 }

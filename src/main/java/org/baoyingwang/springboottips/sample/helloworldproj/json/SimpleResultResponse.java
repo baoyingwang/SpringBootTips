@@ -2,6 +2,7 @@ package org.baoyingwang.springboottips.sample.helloworldproj.json;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.baoyingwang.springboottips.sample.helloworldproj.enums.RestBusinessErrorCode;
 
 @Data
 public class SimpleResultResponse<T> {
@@ -9,6 +10,8 @@ public class SimpleResultResponse<T> {
     public static <T> SimpleResultResponse<T> newInstance(T data){
 
         SimpleResultResponse result = new SimpleResultResponse<T>();
+        result.setErrorCode(RestBusinessErrorCode.SUCCESS.getCode());
+        result.setErrorMessage(RestBusinessErrorCode.SUCCESS.getMsg());
         result.setData(data);
         return result;
     }

@@ -3,6 +3,7 @@ package org.baoyingwang.springboottips.sample.helloworldproj.integration;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.baoyingwang.springboottips.sample.helloworldproj.enums.RestBusinessErrorCode;
 import org.baoyingwang.springboottips.sample.helloworldproj.json.CountryModel;
 import org.junit.Assert;
 import org.junit.Test;
@@ -30,21 +31,9 @@ public class HelloWorldIntegrationTest {
     private HttpHeaders headers = new HttpHeaders();
 
     @Test
-    public void testGET(){
+    public void testGETCase(){
 
-        HttpEntity<String> entity = null;
-        ResponseEntity<SimpleResponseEchoCountryModel> response = restTemplate.exchange(
-                "http://localhost:"+port+"/country/China",
-                HttpMethod.GET, entity, SimpleResponseEchoCountryModel.class);
-
-        SimpleResponseEchoCountryModel model = response.getBody();
-        Assert.assertNotNull(model);
-        Assert.assertNull(model.getErrorCode());
-        Assert.assertNotNull(model.getData());
-
-        Assert.assertEquals("China", model.getData().getCountry());
-        Assert.assertEquals(new Integer(1_300_000_000), model.getData().getPopulation());
-
+        testGET("China", 1_300_000_000);
     }
 
     @Test
@@ -55,17 +44,34 @@ public class HelloWorldIntegrationTest {
         india.setPopulation(1_000_000_000);
         HttpEntity<CountryModel> entity = new HttpEntity<>(india, headers);
 
-        ResponseEntity<SimpleResponseEchoCountryModel> response = restTemplate.exchange(
+        ResponseEntity<SimpleResponseEAddCountryModel> response = restTemplate.exchange(
                 "http://localhost:"+port+"/country",
-                HttpMethod.POST, entity, SimpleResponseEchoCountryModel.class);
+                HttpMethod.POST, entity, SimpleResponseEAddCountryModel.class);
+
+        SimpleResponseEAddCountryModel model = response.getBody();
+        Assert.assertNotNull(model);
+        Assert.assertEquals(new Integer(RestBusinessErrorCode.SUCCESS.getCode()), model.getErrorCode());
+        Assert.assertNotNull(model.getData());
+        Assert.assertEquals("India", model.getData());
+
+        testGET("India", 1_000_000_000);
+
+    }
+
+    public void testGET(String country, Integer expectedPopulation){
+
+        HttpEntity<String> entity = null;
+        ResponseEntity<SimpleResponseEchoCountryModel> response = restTemplate.exchange(
+                "http://localhost:"+port+"/country/" + country,
+                HttpMethod.GET, entity, SimpleResponseEchoCountryModel.class);
 
         SimpleResponseEchoCountryModel model = response.getBody();
         Assert.assertNotNull(model);
-        Assert.assertNull(model.getErrorCode());
+        Assert.assertEquals(new Integer(RestBusinessErrorCode.SUCCESS.getCode()), model.getErrorCode());
         Assert.assertNotNull(model.getData());
 
-        Assert.assertEquals("India", model.getData().getCountry());
-        Assert.assertEquals(new Integer(1_000_000_000), model.getData().getPopulation());
+        Assert.assertEquals(country, model.getData().getCountry());
+        Assert.assertEquals(expectedPopulation, model.getData().getPopulation());
 
     }
 
@@ -83,5 +89,20 @@ public class HelloWorldIntegrationTest {
 
         @JsonProperty("data")
         private CountryModel data;
+    }
+
+    @Data
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    static public class SimpleResponseEAddCountryModel {
+
+        //TODO re-check whether use error-code or some others to make it consistent with best practice
+        @JsonProperty("error-code")
+        private Integer errorCode;
+
+        @JsonProperty("error-message")
+        private String errorMessage;
+
+        @JsonProperty("data")
+        private String data; //as country
     }
 }

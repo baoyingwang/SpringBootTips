@@ -48,6 +48,5 @@ public class HelloWorldServiceTest {
         assertEquals(country, countryModel.get().getCountry());
         assertEquals(population, countryModel.get().getPopulation());
 
-
     }
 }
